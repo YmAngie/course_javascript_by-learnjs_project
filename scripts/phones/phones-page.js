@@ -29,6 +29,12 @@ export default class PhonesPage {
       this._catalog.hide();
       this._viewer.showPhone(phone);
     })
+
+    this._catalog.on('addToCart', (event) => {
+      let phoneId = event.detail;
+
+      this._shoppingCart.addItem(phoneId);
+    })
   }
 
   _initViewer() {
@@ -39,6 +45,12 @@ export default class PhonesPage {
     this._viewer.on('back', () => {
       this._catalog.show();
       this._viewer.hide();
+    });
+
+    this._viewer.on('add', (event) => {
+      let phoneId = event.detail;
+
+      this._shoppingCart.addItem(phoneId);
     })
   }
 

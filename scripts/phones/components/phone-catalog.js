@@ -10,13 +10,17 @@ export default class PhoneCatalog extends Component {
     this._render();
 
     this.on('click', '[data-element="phone-link"]', (event) => {
-      let phoneLink = event.delegateTarget;
+      let phoneLink = event.delegateTarget,
+          phoneElement = phoneLink.closest('[data-element="phone"]');
 
-      let customEvent = new CustomEvent('phoneSelected', {
-        detail: phoneLink.dataset.phoneId
-      });
+      this._trigger('phoneSelected', phoneElement.dataset.phoneId);
+    });
 
-      this._element.dispatchEvent(customEvent);
+    this.on('click', '[data-element="button-add"]', (event) => {
+      let addButton = event.delegateTarget,
+      phoneElement = addButton.closest('[data-element="phone"]');
+
+      this._trigger('addToCart', phoneElement.dataset.phoneId);
     });
   }
 
@@ -25,18 +29,19 @@ export default class PhoneCatalog extends Component {
       <ul class="phones">
         ${ this._phones.map(phone => `
         
-          <li class="thumbnail">
+          <li class="thumbnail" 
+              data-element="phone"
+              data-phone-id="${ phone.id }">
             <a
               href="#!/phones/${ phone.id }"
               class="thumb"
               data-element="phone-link"
-              data-phone-id="${ phone.id }"
             >
               <img alt="${ phone.name }" src="${ phone.imageUrl }">
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success" >
+              <a class="btn btn-success" data-element="button-add">
                 Add
               </a>
             </div>
@@ -44,7 +49,6 @@ export default class PhoneCatalog extends Component {
             <a 
               href="#!/phones/${ phone.id }"
               data-element="phone-link"
-              data-phone-id="${ phone.id }"
             >
               ${ phone.name }
             </a>
