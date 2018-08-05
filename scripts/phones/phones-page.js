@@ -17,15 +17,16 @@ export default class PhonesPage {
   _initCatalog() {
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getAll(),
-
-      onPhoneSelected: (phoneId) => {
-        let phone = PhoneService.get(phoneId);
-
-        this._catalog.hide();
-        this._viewer.showPhone(phone);
-      }
+      phones: PhoneService.getAll()
     });
+
+    this._catalog._element.addEventListener('phoneSelected', (event) => {
+      let phoneId = event.detail,
+        phone = PhoneService.get(phoneId);
+
+      this._catalog.hide();
+      this._viewer.showPhone(phone);
+    })
   }
 
   _initViewer() {

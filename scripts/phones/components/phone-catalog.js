@@ -3,7 +3,7 @@
 import Component from '../../component.js'
 
 export default class PhoneCatalog extends Component {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones }) {
     super({ element })
 
     this._phones = phones;
@@ -26,8 +26,12 @@ export default class PhoneCatalog extends Component {
     this.on('click', '[data-element="phone-link"]', (event) => {
       let phoneLink = event.delegateTarget;
 
-      onPhoneSelected(phoneLink.dataset.phoneId);
-    })
+      let customEvent = new CustomEvent('phoneSelected', {
+        detail: phoneLink.dataset.phoneId
+      });
+
+      this._element.dispatchEvent(customEvent);
+    });
   }
 
   _render() {
