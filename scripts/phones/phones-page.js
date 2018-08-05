@@ -20,7 +20,7 @@ export default class PhonesPage {
       phones: PhoneService.getAll()
     });
 
-    this._catalog._element.addEventListener('phoneSelected', (event) => {
+    this._catalog.on('phoneSelected', (event) => {
       let phoneId = event.detail,
         phone = PhoneService.get(phoneId);
 
