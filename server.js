@@ -2,14 +2,18 @@ let http = require('http'),
     static = require('node-static'),
     file = new static.Server('.', {
         cache: 0,
-        // headers:
+        headers: {
+            'Access-Control-Allow-Origin': 'https://ymangie.github.io',
+            'Access-Control-Allow-Methods': 'GET,PUT',
+            // 'Access-Control-Allow-Headers': 'Content-Type'
+        }
     });
 
 function accept(req, res) {
     if (req.url.startsWith('/api')) {
         setTimeout(() => {
             file.serve(req, res);
-        }, 1000);
+        }, 500);
     } else {
         file.serve(req, res);
     }
