@@ -1,22 +1,18 @@
 'use strict';
 
+import HttpService from '../../common/service/http-service.js';
+
 const PhoneService = {
-    getAll() {
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('GET', 'phones/phones.json', false);
-        xhr.send();
-
-        if (xhr.status !== 200) {
-            alert(`${xhr.status}: ${xhr.statusText}`);
-        } else {
-            let responseData = JSON.parse(xhr.responseText);
-            return responseData;
-        }
+    getAll(callback) {
+        HttpService.sendRequest('/api/phones.json', {
+            successCallback: callback
+        })
     },
 
-    get(phoneId) {
-        return phoneFromServer;
+    get(phoneId, callback) {
+        HttpService.sendRequest(`/api/phones/${phoneId}.json`, {
+            successCallback: callback
+        })
     }
 };
 
