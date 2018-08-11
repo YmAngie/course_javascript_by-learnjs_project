@@ -1,6 +1,8 @@
+'use strict';
+
 let http = require('http'),
-    static = require('node-static'),
-    file = new static.Server('.', {
+    nodeStatic = require('node-static'),
+    file = new nodeStatic.Server('.', {
         cache: 0,
         headers: {
             'Access-Control-Allow-Origin': 'https://ymangie.github.io',
