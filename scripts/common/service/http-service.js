@@ -1,6 +1,6 @@
 'use strict';
 
-const API_URL = 'http://localhost:8000/api/';
+const API_URL = 'https://ymangie.github.io/course_javascript_by-learnjs_project/api/';
 
 const HttpService = {
     sendRequest(url, {
