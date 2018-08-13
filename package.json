@@ -4,7 +4,8 @@
   "description": "You can use the [editor on GitHub](https://github.com/mgrinko/js-20180614/edit/gh-pages/README.md) to maintain and preview the content for your website in Markdown files.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
