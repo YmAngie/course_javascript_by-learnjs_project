@@ -2,6 +2,7 @@
 
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
+import PhonesFilter from './components/phones-filter.js';
 import ShoppingCart from './components/shopping-cart.js';
 import PhoneService from './services/phone-service.js';
 
@@ -11,6 +12,7 @@ export default class PhonesPage {
         this._render();
         this._initCatalog();
         this._initViewer();
+        this._initFilters();
         this._initShoppingCart();
     }
 
@@ -19,17 +21,19 @@ export default class PhonesPage {
             element: this._element.querySelector('[data-component="phone-catalog"]')
         });
 
-        PhoneService.getAll((phones) => {
-            this._catalog.showPhones(phones);
-        });
+        PhoneService.getAll()
+            .then((phones) => {
+                this._catalog.showPhones(phones);
+            });
 
         this._catalog.on('phoneSelected', (event) => {
             let phoneId = event.detail;
 
-            PhoneService.get(phoneId, (phone) => {
-                this._catalog.hide();
-                this._viewer.showPhone(phone);
-            });
+            PhoneService.get(phoneId)
+                .then((phone) => {
+                    this._catalog.hide();
+                    this._viewer.showPhone(phone);
+                });
         });
 
         this._catalog.on('addToCart', (event) => {
@@ -54,6 +58,27 @@ export default class PhonesPage {
         });
     }
 
+    _initFilters() {
+        this._filter = new PhonesFilter({
+            element: this._element.querySelector('[data-component="phones-filter"]'),
+        });
+
+        // async/await example
+        this._filter.on('sort', async (event) => {
+            let phones = await PhoneService.getAll({orderField: event.detail})
+                .catch((e) => console.log(e))
+
+            this._catalog.showPhones(phones);
+        });
+
+        this._filter.on('search', (event) => {
+            PhoneService.getAll({query: event.detail})
+                .then((phones) => {
+                    this._catalog.showPhones(phones);
+                });
+        });
+    }
+
     _initShoppingCart() {
         this._shoppingCart = new ShoppingCart({
             element: this._element.querySelector('[data-component="shopping-cart"]')
@@ -67,19 +92,8 @@ export default class PhonesPage {
                     <!--Sidebar-->
                     <div class="col-md-2">
                     <section>
-                        <p>
-                            Search:
-                            <input>
-                        </p>
-                    
-                        <p>
-                        Sort by:
-                            <select>
-                                <option value="name">Alphabetical</option>
-                                <option value="age">Newest</option>
-                            </select>
-                        </p>
-                     </section>
+                        <div data-component="phones-filter"></div>
+                    </section>
                 
                     <section>
                         <div data-component="shopping-cart"></div>
